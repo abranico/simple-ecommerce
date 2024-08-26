@@ -68,3 +68,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  #demo-message {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  /* Cuando el scroll es mayor a 50px */
+  .scrolled #demo-message {
+    opacity: 0;
+    transform: translateY(-20px);
+    /* Se mueve hacia arriba */
+  }
+}

@@ -2,6 +2,7 @@ import { Home } from "@/pages";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { ThemeProvider } from "./context/theme.context";
+import Shop from "./pages/Shop/Shop";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/shop" element={<Shop />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

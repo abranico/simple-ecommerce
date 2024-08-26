@@ -12,7 +12,7 @@ import {
 import { Input } from "./ui/input";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/context/auth.context";
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
 
 interface ILoginModal {
   sheetOpen: boolean;
@@ -21,6 +21,8 @@ interface ILoginModal {
 
 const LoginModal: React.FC<ILoginModal> = ({ sheetOpen, closeSheet }) => {
   const { handleLogin } = useAuth();
+  const emailId = useId();
+  const passwordId = useId();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,9 +47,9 @@ const LoginModal: React.FC<ILoginModal> = ({ sheetOpen, closeSheet }) => {
           <div className="mx-auto grid w-[350px] gap-6">
             <form onSubmit={handleSubmit} className="grid gap-7">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <label htmlFor={emailId}>Email</label>
                 <Input
-                  id="email"
+                  id={emailId}
                   type="email"
                   placeholder="m@example.com"
                   required
@@ -55,7 +57,7 @@ const LoginModal: React.FC<ILoginModal> = ({ sheetOpen, closeSheet }) => {
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
+                  <label htmlFor={passwordId}>Password</label>
                   <Link
                     to="/forgot-password"
                     className="ml-auto inline-block text-sm underline"
@@ -63,7 +65,7 @@ const LoginModal: React.FC<ILoginModal> = ({ sheetOpen, closeSheet }) => {
                     Forgot your password?
                   </Link>
                 </div>
-                <Input id="password" type="password" required />
+                <Input id={passwordId} type="password" required />
               </div>
               <Button type="submit" className="w-full">
                 Login

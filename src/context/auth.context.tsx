@@ -1,5 +1,19 @@
-import { useContext, useState } from "react";
+import { useContext, useReducer, useState } from "react";
 import { createContext } from "react";
+
+const initialState = false;
+const reducer = (state, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case "LOGIN": {
+      return true;
+    }
+    case "LOGOUT": {
+      return initialState;
+    }
+  }
+  return state;
+};
 
 interface IAuthContext {
   isLoggin: boolean;
@@ -14,18 +28,16 @@ interface IAuthContextProvider {
 export const AuthContext = createContext<IAuthContext | null>(null);
 
 const AuthContextProvider: React.FC<IAuthContextProvider> = ({ children }) => {
-  const [isLoggin, setIsLoggin] = useState(true);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  const handleLogin = () => {
-    setIsLoggin(true);
-  };
+  const handleLogin = () => dispatch({ type: "LOGIN" });
 
-  const handleLogout = () => {
-    setIsLoggin(false);
-  };
+  const handleLogout = () => dispatch({ type: "LOGOUT" });
 
   return (
-    <AuthContext.Provider value={{ isLoggin, handleLogin, handleLogout }}>
+    <AuthContext.Provider
+      value={{ isLoggin: state, handleLogin, handleLogout }}
+    >
       {children}
     </AuthContext.Provider>
   );
