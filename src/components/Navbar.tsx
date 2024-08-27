@@ -15,6 +15,8 @@ import { IS_DEMO } from "@/config";
 import { useAuth } from "@/context/auth.context";
 import { useState } from "react";
 import LoginModal from "./LoginModal";
+import { useCart } from "@/context/cart.context";
+import CartModal from "./CartModal";
 const Navbar = () => {
   const { isLoggin } = useAuth();
 
@@ -79,10 +81,7 @@ const Navbar = () => {
           <ul></ul>
           <ul className="flex gap-2 items-center w-full ">
             <li className="hidden lg:block relative ml-28 p-2 cursor-pointer hover:opacity-55">
-              <ShoppingCartIcon />
-              <span className="absolute top-0 -right-1 z-20 font-bold text-gray-300">
-                0
-              </span>
+              <Cart />
             </li>
             <li className="hidden sm:flex ml-auto">
               <div className="flex items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
@@ -185,6 +184,22 @@ const NotUserMenu = () => {
       <Button onClick={() => setSheetOpen(true)} variant="outline">
         Sign In
       </Button>
+    </>
+  );
+};
+
+const Cart = () => {
+  const { cart } = useCart();
+  const [sheetOpen, setSheetOpen] = useState<boolean>(false);
+  return (
+    <>
+      <CartModal sheetOpen={sheetOpen} closeSheet={() => setSheetOpen(false)} />
+      <button onClick={() => setSheetOpen(true)} className="m-0 p-0 w-0">
+        <ShoppingCartIcon />
+        <span className="absolute top-0 pl-7 z-20 font-bold text-gray-300">
+          {cart.length > 99 ? "99+" : cart.length}
+        </span>
+      </button>
     </>
   );
 };

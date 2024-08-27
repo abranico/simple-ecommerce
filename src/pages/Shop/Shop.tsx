@@ -1,5 +1,6 @@
 import { SearchInput } from "@/components";
 import products from "@/mocks/products.json";
+import Product from "./components/Product";
 
 const Shop = () => {
   return (
@@ -10,17 +11,17 @@ const Shop = () => {
           <SearchInput />
         </div>
       </div>
-      <ul className="max-w-screen-lg m-auto grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-5 h-full ">
+      <ul className="max-w-screen-lg px-5 mx-auto grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-5 h-full ">
         {products.map((product) => (
-          <li key={product.id} className="max-w-[320px] ">
-            <img
-              src={product.image}
-              className="w-full h-auto  object-cover "
-              alt=""
-            />
-            <p>{product.title}</p>
-            <button className="text-white bg-red-400">Add To Cart</button>
-          </li>
+          <Product
+            key={product.id}
+            id={product.id}
+            title={product.title}
+            category={product.category}
+            image={product.image}
+            price={product.price}
+            rating={product.rating.rate}
+          />
         ))}
       </ul>
     </section>
