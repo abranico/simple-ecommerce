@@ -1,23 +1,17 @@
-import { Home } from "@/pages";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+
 import Navbar from "./components/Navbar";
-import { ThemeProvider } from "./context/theme.context";
-import Shop from "./pages/Shop/Shop";
-import CartContextProvider from "./context/cart.context";
+import Footer from "./components/Footer";
 
 function App() {
   return (
-    <CartContextProvider>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <BrowserRouter>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/shop" element={<Shop />} />
-          </Routes>
-        </BrowserRouter>
-      </ThemeProvider>
-    </CartContextProvider>
+    <div className="max-w-screen-2xl  mx-auto flex flex-col min-h-screen ">
+      <Navbar />
+      <div className="grow pb-10">
+        <Outlet />
+      </div>
+      <Footer />
+    </div>
   );
 }
 

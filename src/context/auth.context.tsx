@@ -17,6 +17,7 @@ const reducer = (state, action) => {
 
 interface IAuthContext {
   isLoggin: boolean;
+  isAdmin: boolean;
   handleLogin: () => void;
   handleLogout: () => void;
 }
@@ -34,9 +35,11 @@ const AuthContextProvider: React.FC<IAuthContextProvider> = ({ children }) => {
 
   const handleLogout = () => dispatch({ type: "LOGOUT" });
 
+  const isAdmin = true;
+
   return (
     <AuthContext.Provider
-      value={{ isLoggin: state, handleLogin, handleLogout }}
+      value={{ isLoggin: state, isAdmin, handleLogin, handleLogout }}
     >
       {children}
     </AuthContext.Provider>

@@ -1,3 +1,4 @@
+import Product from "@/components/Product";
 import {
   Carousel,
   CarouselContent,
@@ -6,77 +7,81 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import products from "@/mocks/products.json";
+import Autoplay from "embla-carousel-autoplay";
+import { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import ListOfProducts from "@/components/ListOfProducts";
+
 const Home = () => {
+  const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }));
+  const featuredProducts = products.slice(0, 5);
+  const recommendedProducts = products.slice(5, 10);
+  const [count, setCount] = useState(0);
+  const navigator = useNavigate();
+
+  const handleTransition = () => {
+    document.startViewTransition(() => {
+      setCount(count + 1);
+    });
+  };
+
   return (
-    <div className="flex justify-center  mt-2 p-10">
-      <div className="w-2/3 relative h-full bg-black">
-        <Carousel className="h-full">
-          <CarouselContent className="h-full">
-            {products.slice(0, 3).map((product) => (
-              <CarouselItem
-                key={product.id}
-                className="relative flex flex-col justify-end h-full"
-              >
-                <div className="flex-1 h-full overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="object-contain w-full max-h-[521px]"
-                  />
-                </div>
-                <div className="absolute bottom-0 left-0 p-6 bg-gradient-to-t from-black to-transparent w-full">
-                  <h2 className="text-xl md:text-3xl font-bold text-white mt-2">
-                    {product.title}
-                  </h2>
-                  <div className="flex items-center mt-1 md:mt-2">
-                    <span className="text-yellow-400 text-lg md:text-2xl">
-                      ★ {product.rating.rate}
-                    </span>
-                    <span className="text-white text-sm md:text-xl ml-2 md:ml-4"></span>
-                  </div>
-                  <p className="text-white mt-2 md:mt-4 line-clamp-3">
-                    {product.description}
-                  </p>
-                </div>
+    <motion.div
+      initial={{ opacity: 0, y: 50 }} // Estado inicial
+      animate={{ opacity: 1, y: 0 }} // Estado final
+      transition={{ duration: 0.5 }}
+    >
+      <header className="">
+        <Carousel plugins={[plugin.current]} className="relative">
+          <CarouselContent
+            className="cursor-pointer"
+            onClick={() => navigator("/shop")}
+          >
+            {[
+              { src: "banner1.webp", alt: "Banner 1" },
+              { src: "banner6.jpg", alt: "Banner 6" },
+              { src: "banner7.jpg", alt: "Banner 7" },
+            ].map((banner, index) => (
+              <CarouselItem key={index} className="p-0 w-full max-h-[320px] ">
+                <img
+                  className="w-full h-auto max-h-[320px] object-fill"
+                  src={banner.src}
+                  alt={banner.alt}
+                />
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="absolute top-1/2 left-4 transform -translate-y-1/2" />
-          <CarouselNext className="absolute top-1/2 right-4 transform -translate-y-1/2" />
+          <CarouselPrevious className="hidden md:flex absolute left-0 ml-14" />
+          <CarouselNext className="hidden md:flex absolute right-0 mr-14" />
         </Carousel>
-      </div>
-
-      {/* Lista de otros lanzamientos */}
-      <div className="w-1/3 p-4 overflow-y-auto ">
-        <div className="space-y-4">
-          {products.slice(3, 6).map((product) => (
-            <div key={product.id} className="flex">
-              <img
-                src={product.image}
-                alt={product.title}
-                className="w-16 h-24 object-cover"
-              />
-              <div className="ml-4">
-                <h4 className="text-white text-lg font-bold line-clamp-1">
-                  {product.title}
-                </h4>
-                <div className="flex items-center mt-1">
-                  <span className="text-yellow-400">
-                    ★ {product.rating.rate || "N/A"}
-                  </span>
-                </div>
-                <p className="text-white mt-1 line-clamp-2">
-                  {product.description}
-                </p>
-                <button className="mt-2 text-sm text-yellow-400">
-                  Watch now →
-                </button>
-              </div>
-            </div>
-          ))}
+      </header>
+      <section className="px-14 mt-16">
+        <div className="flex items-center justify-between mb-10 font-semibold">
+          <h2 className="text-3xl text-gray-700 ">Featured Products</h2>
+          <Link
+            to=""
+            className="text-xl underline text-gray-500 hover:text-black "
+          >
+            See all
+          </Link>
         </div>
-      </div>
-    </div>
+        <ListOfProducts products={featuredProducts} />
+      </section>
+      <section className="px-14 mt-16">
+        <div className="flex items-center justify-between mb-10 font-semibold">
+          <h2 className="text-3xl text-gray-700 ">Recommended Products</h2>
+          <Link
+            to=""
+            className="text-xl underline text-gray-500 hover:text-black "
+          >
+            See all
+          </Link>
+        </div>
+        <ListOfProducts products={recommendedProducts} />
+      </section>
+      <button onClick={handleTransition}>{count}</button>
+    </motion.div>
   );
 };
 

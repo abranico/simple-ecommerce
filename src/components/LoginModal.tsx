@@ -32,7 +32,7 @@ const LoginModal: React.FC<ILoginModal> = ({ sheetOpen, closeSheet }) => {
 
   return (
     <Sheet open={sheetOpen} onOpenChange={closeSheet}>
-      <SheetContent>
+      <SheetContent className="w-full">
         <SheetHeader>
           <SheetTitle>
             <h1 className="text-3xl font-bold">Sign In</h1>
@@ -76,7 +76,11 @@ const LoginModal: React.FC<ILoginModal> = ({ sheetOpen, closeSheet }) => {
             </form>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
-              <Link to="#" className="underline">
+              <Link
+                to="/register"
+                onClick={() => closeSheet()}
+                className="underline"
+              >
                 Sign up
               </Link>
             </div>
