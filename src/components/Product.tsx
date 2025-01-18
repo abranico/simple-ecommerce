@@ -44,7 +44,7 @@ const Product: React.FC<ProductProps> = ({
 
   return (
     <li
-      className=" w-full h-full hover:scale-105 group transition-all 
+      className="w-full h-full hover:scale-105 group transition-all 
     duration-300  border-gray-200 rounded-lg overflow-hidden shadow-black/30 shadow   "
     >
       <Link to={`/product/${id}`}>

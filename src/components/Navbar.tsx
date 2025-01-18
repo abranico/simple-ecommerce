@@ -37,7 +37,7 @@ const Navbar = () => {
         </p>
       )}
       <header className="bg-gray-50 w-full ">
-        <nav className="px-4 xl:px-14 py-5 flex items-center justify-between  w-full border-b border-gray-300">
+        <nav className="px-4 md:px-14 py-5 flex items-center justify-between  w-full border-b border-gray-300">
           <ul className="">
             <li>
               <NavLink
