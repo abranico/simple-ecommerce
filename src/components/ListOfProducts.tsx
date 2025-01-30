@@ -7,7 +7,7 @@ interface ListOfProductsProps {
 
 const ListOfProducts: React.FC<ListOfProductsProps> = ({ products }) => {
   return (
-    <ul className="grid place-items-center grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:flex gap-4">
+    <ul className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-8">
       {products.map((product) => (
         <Product
           key={product.id}

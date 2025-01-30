@@ -40,7 +40,7 @@ const Filters = ({ onFilter, filter }: FiltersProps) => {
   };
 
   return (
-    <aside className="sticky top-0 w-1/3 h-screen p-4 bg-gray-100 rounded-lg overflow-y-scroll">
+    <>
       <div className="mb-6">
         <h2 className="text-xl font-semibold mb-4">Categories</h2>
         <ul className="space-y-2">
@@ -212,7 +212,7 @@ const Filters = ({ onFilter, filter }: FiltersProps) => {
           </div>
         </div>
       </div>
-    </aside>
+    </>
   );
 };
 

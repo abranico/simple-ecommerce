@@ -17,7 +17,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { IS_DEMO } from "@/config";
 import { useAuth } from "@/context/auth.context";
 import { useState } from "react";
@@ -163,34 +168,42 @@ const ResponsiveMenu = ({ isLoggin }: { isLoggin: boolean }) => {
           <div className=" w-full flex justify-center  items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
             {isLoggin ? <UserMenu /> : <NotUserMenu />}
           </div>
-          <div className="w-full flex justify-center  items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+          <div className="w-full sm:hidden flex justify-center  items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
             {<SearchInput />}
           </div>
 
-          <NavLink
-            to="/"
-            className="text-muted-foreground hover:text-foreground"
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/shop"
-            className="text-muted-foreground hover:text-foreground"
-          >
-            Shop
-          </NavLink>
-          <NavLink
-            to="/featured"
-            className="text-muted-foreground hover:text-foreground"
-          >
-            Featured
-          </NavLink>
-          <NavLink
-            to="/recommended"
-            className="text-muted-foreground hover:text-foreground"
-          >
-            Recommended
-          </NavLink>
+          <SheetTrigger asChild>
+            <NavLink
+              to="/"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              Home
+            </NavLink>
+          </SheetTrigger>
+          <SheetTrigger asChild>
+            <NavLink
+              to="/shop"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              Shop
+            </NavLink>
+          </SheetTrigger>
+          <SheetTrigger asChild>
+            <NavLink
+              to="/featured"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              Featured
+            </NavLink>
+          </SheetTrigger>
+          <SheetTrigger asChild>
+            <NavLink
+              to="/recommended"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              Recommended
+            </NavLink>
+          </SheetTrigger>
         </nav>
       </SheetContent>
     </Sheet>

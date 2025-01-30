@@ -8,13 +8,16 @@ import {
 } from "@/components/ui/carousel";
 import products from "@/mocks/products.json";
 import Autoplay from "embla-carousel-autoplay";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import ListOfProducts from "@/components/ListOfProducts";
 import { CarIcon, PersonStanding, RocketIcon, ShieldCheck } from "lucide-react";
+import useProducts from "@/hooks/useProducts";
 
 const Home = () => {
+  const { productss } = useProducts();
+  console.log(productss);
   const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }));
   const featuredProducts = products.slice(0, 6);
   const recommendedProducts = products.slice(6, 12);
@@ -26,6 +29,23 @@ const Home = () => {
       setCount(count + 1);
     });
   };
+
+  // useEffect(() => {
+  //   const url = "https://fakestoreapi.com/products";
+  //   const abortController = new AbortController();
+  //   console.log("inicio");
+  //   fetch(url, { signal: abortController.signal })
+  //     .then((response) => {
+  //       if (!response.ok) throw new Error();
+  //       return response.json();
+  //     })
+  //     .then((data) => console.log(data))
+  //     .catch((error) =>
+  //       console.log({ "Un error ha ocurrido: ": error.message })
+  //     )
+  //     .finally(() => console.log("finalizo"));
+  //   return () => abortController.abort();
+  // }, []);
 
   return (
     <motion.div
@@ -55,7 +75,7 @@ const Home = () => {
           <CarouselPrevious className="hidden md:flex absolute left-0 ml-14" />
           <CarouselNext className="hidden md:flex absolute right-0 mr-14" />
         </Carousel>
-        <ol className="mt-5 px-4 md:px-14 flex flex-col md:flex-row justify-center gap-6 bg-gray-50 py-8 rounded-lg ">
+        <ol className="px-4 md:px-14 flex flex-col md:flex-row justify-center gap-6 bg-zinc-50 py-5 rounded-lg ">
           <li className="flex flex-col items-center text-center p-5 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
             <CarIcon size={40} className="text-pink-400 mb-3" />
             <strong className="text-lg font-semibold text-gray-800">
@@ -79,7 +99,7 @@ const Home = () => {
           </li>
         </ol>
       </header>
-      <section className="px-4 md:px-14 mt-16 bg-gray-50 py-5">
+      <section className="px-4 md:px-14 mt-10  py-5">
         <div className="flex items-center justify-between mb-10 font-semibold">
           <h2 className="text-xl md:text-3xl text-gray-700  ">
             Featured Products
@@ -93,7 +113,7 @@ const Home = () => {
         </div>
         <ListOfProducts products={featuredProducts} />
       </section>
-      <section className="px-4 md:px-14 mt-16 bg-gray-50 py-5">
+      <section className="px-4 md:px-14 mt-16  py-5">
         <div className="flex items-center justify-between mb-10 font-semibold">
           <h2 className="w-[50px] sm:w-full text-xl md:text-3xl text-gray-700 ">
             Recommended Products
