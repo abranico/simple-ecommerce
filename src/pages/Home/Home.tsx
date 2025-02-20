@@ -1,4 +1,4 @@
-import Product from "@/components/Product";
+import ListOfProducts from "@/components/ListOfProducts";
 import {
   Carousel,
   CarouselContent,
@@ -6,18 +6,14 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import products from "@/mocks/products.json";
+import { useProducts } from "@/context/products";
 import Autoplay from "embla-carousel-autoplay";
-import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import ListOfProducts from "@/components/ListOfProducts";
-import { CarIcon, PersonStanding, RocketIcon, ShieldCheck } from "lucide-react";
-import useProducts from "@/hooks/useProducts";
+import { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const { productss } = useProducts();
-  console.log(productss);
+  const { products } = useProducts();
   const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }));
   const featuredProducts = products.slice(0, 6);
   const recommendedProducts = products.slice(6, 12);
@@ -48,12 +44,12 @@ const Home = () => {
   // }, []);
 
   return (
-    <motion.div
+    <motion.section
       initial={{ opacity: 0, y: 50 }} // Estado inicial
       animate={{ opacity: 1, y: 0 }} // Estado final
       transition={{ duration: 0.5 }}
     >
-      <header className="">
+      <header className="h-[320px]">
         <Carousel plugins={[plugin.current]} className="relative">
           <CarouselContent
             className="cursor-pointer"
@@ -75,7 +71,7 @@ const Home = () => {
           <CarouselPrevious className="hidden md:flex absolute left-0 ml-14" />
           <CarouselNext className="hidden md:flex absolute right-0 mr-14" />
         </Carousel>
-        <ol className="px-4 md:px-14 flex flex-col md:flex-row justify-center gap-6 bg-zinc-50 py-5 rounded-lg ">
+        {/* <ol className="px-4 md:px-14 flex flex-col md:flex-row justify-center gap-6 bg-zinc-50 py-5 rounded-lg ">
           <li className="flex flex-col items-center text-center p-5 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
             <CarIcon size={40} className="text-pink-400 mb-3" />
             <strong className="text-lg font-semibold text-gray-800">
@@ -97,37 +93,37 @@ const Home = () => {
             </strong>
             <p className="text-gray-600">Best customer care services</p>
           </li>
-        </ol>
+        </ol> */}
       </header>
-      <section className="px-4 md:px-14 mt-10  py-5">
+      <article className="px-4 md:px-14 mt-10  py-5">
         <div className="flex items-center justify-between mb-10 font-semibold">
           <h2 className="text-xl md:text-3xl text-gray-700  ">
             Featured Products
           </h2>
           <Link
-            to=""
+            to="/featured"
             className="text-md md:text-xl  underline text-gray-500 hover:text-black "
           >
             See all
           </Link>
         </div>
         <ListOfProducts products={featuredProducts} />
-      </section>
-      <section className="px-4 md:px-14 mt-16  py-5">
+      </article>
+      <article className="px-4 md:px-14 mt-16  py-5">
         <div className="flex items-center justify-between mb-10 font-semibold">
           <h2 className="w-[50px] sm:w-full text-xl md:text-3xl text-gray-700 ">
             Recommended Products
           </h2>
           <Link
-            to=""
+            to="/recommended"
             className="w-full text-end text-md md:text-xl  underline text-gray-500 hover:text-black  "
           >
             See all
           </Link>
         </div>
         <ListOfProducts products={recommendedProducts} />
-      </section>
-    </motion.div>
+      </article>
+    </motion.section>
   );
 };
 

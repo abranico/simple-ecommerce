@@ -1,5 +1,8 @@
-import categories from "@/mocks/categories.json";
+import { useEffect, useState } from "react";
 import { Filter, SortBy } from "../../hooks/useFilter";
+import Loader from "@/components/Loader";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 interface FiltersProps {
   onFilter: (newFilters: Partial<Filter>) => void;
@@ -7,6 +10,27 @@ interface FiltersProps {
 }
 
 const Filters = ({ onFilter, filter }: FiltersProps) => {
+  const [categories, setCategories] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    fetch("https://fakestoreapi.com/products/categories", {
+      signal: abortController.signal,
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to request categories");
+        return res.json();
+      })
+      .then((data) => setCategories(data))
+      .finally(() => {
+        setLoading(false);
+      });
+    return () => {
+      abortController.abort();
+    };
+  }, []);
+
   const handleCategoryChange = (category: string) => {
     const isSelected = filter.categories.includes(category);
     const newCategories = isSelected
@@ -44,19 +68,21 @@ const Filters = ({ onFilter, filter }: FiltersProps) => {
       <div className="mb-6">
         <h2 className="text-xl font-semibold mb-4">Categories</h2>
         <ul className="space-y-2">
-          {categories.map((category, index) => (
-            <li key={index}>
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  className="form-checkbox"
-                  checked={filter.categories.includes(category)}
-                  onChange={() => handleCategoryChange(category)}
-                />
-                <span className="ml-2 capitalize">{category}</span>
-              </label>
-            </li>
-          ))}
+          {loading
+            ? Array.from({ length: 4 }, (_, i) => <CategorySkeleton />)
+            : categories.map((category, index) => (
+                <li key={index}>
+                  <label className="inline-flex items-center">
+                    <input
+                      type="checkbox"
+                      className="form-checkbox"
+                      checked={filter.categories.includes(category)}
+                      onChange={() => handleCategoryChange(category)}
+                    />
+                    <span className="ml-2 capitalize">{category}</span>
+                  </label>
+                </li>
+              ))}
         </ul>
       </div>
 
@@ -217,3 +243,12 @@ const Filters = ({ onFilter, filter }: FiltersProps) => {
 };
 
 export default Filters;
+
+const CategorySkeleton = () => {
+  return (
+    <li className="flex items-center space-x-2">
+      <Skeleton circle width={16} height={16} /> {/* Checkbox fake */}
+      <Skeleton width={100} height={16} /> {/* Texto fake */}
+    </li>
+  );
+};

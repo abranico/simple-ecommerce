@@ -7,7 +7,7 @@ import {
   ShoppingCartIcon,
   User,
 } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import {
   DropdownMenu,
@@ -25,11 +25,12 @@ import {
 } from "@/components/ui/sheet";
 import { IS_DEMO } from "@/config";
 import { useAuth } from "@/context/auth.context";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import LoginModal from "./LoginModal";
 import { useCart } from "@/context/cart.context";
 import CartModal from "./CartModal";
 import SearchInput from "./SearchInput";
+import clsx from "clsx";
 const Navbar = () => {
   const { isLoggin, isAdmin } = useAuth();
 
@@ -58,41 +59,6 @@ const Navbar = () => {
               </NavLink>
             </li>
           </ul>
-          {/* <ul className="w-full  justify-center gap-6 hidden  flex-col  text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-            <li>
-              <NavLink
-                to="/"
-                className="text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Home
-              </NavLink>
-            </li>
-            <li>
-              {" "}
-              <NavLink
-                to="/shop"
-                className="text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Shop
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/featured"
-                className="text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Featured
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/recommended"
-                className="text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Recommended
-              </NavLink>
-            </li>
-          </ul> */}
 
           <ul className="hidden sm:block w-1/2">
             <SearchInput />
@@ -117,32 +83,54 @@ const Navbar = () => {
             <li>
               <NavLink
                 to="/"
-                className="text-muted-foreground transition-colors hover:text-foreground"
+                className={({ isActive }) =>
+                  clsx(
+                    "transition-colors hover:text-foreground",
+                    isActive ? "text-black font-bold" : "text-muted-foreground"
+                  )
+                }
               >
                 Home
               </NavLink>
             </li>
+
             <li>
-              {" "}
               <NavLink
                 to="/shop"
-                className="text-muted-foreground transition-colors hover:text-foreground"
+                className={({ isActive }) =>
+                  clsx(
+                    "transition-colors hover:text-foreground",
+                    isActive ? "text-black font-bold" : "text-muted-foreground"
+                  )
+                }
               >
                 Shop
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/featured"
-                className="text-muted-foreground transition-colors hover:text-foreground"
+                className={({ isActive }) =>
+                  clsx(
+                    "transition-colors hover:text-foreground",
+                    isActive ? "text-black font-bold" : "text-muted-foreground"
+                  )
+                }
               >
                 Featured
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/recommended"
-                className="text-muted-foreground transition-colors hover:text-foreground"
+                className={({ isActive }) =>
+                  clsx(
+                    "transition-colors hover:text-foreground",
+                    isActive ? "text-black font-bold" : "text-muted-foreground"
+                  )
+                }
               >
                 Recommended
               </NavLink>
@@ -155,6 +143,14 @@ const Navbar = () => {
 };
 
 const ResponsiveMenu = ({ isLoggin }: { isLoggin: boolean }) => {
+  const navigate = useNavigate();
+  const location = useLocation(); // Para obtener la ruta activa actual
+
+  const handleNavigation = (path: string) => {
+    navigate(path); // Esto cambia la ruta
+  };
+
+  const isActive = (path: string) => location.pathname === path;
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -175,7 +171,10 @@ const ResponsiveMenu = ({ isLoggin }: { isLoggin: boolean }) => {
           <SheetTrigger asChild>
             <NavLink
               to="/"
-              className="text-muted-foreground hover:text-foreground"
+              onClick={() => handleNavigation("/")}
+              className={`transition-colors hover:text-foreground ${
+                isActive("/") ? "text-black font-bold" : "text-muted-foreground"
+              }`}
             >
               Home
             </NavLink>
@@ -183,7 +182,12 @@ const ResponsiveMenu = ({ isLoggin }: { isLoggin: boolean }) => {
           <SheetTrigger asChild>
             <NavLink
               to="/shop"
-              className="text-muted-foreground hover:text-foreground"
+              onClick={() => handleNavigation("/shop")}
+              className={`transition-colors hover:text-foreground ${
+                isActive("/shop")
+                  ? "text-black font-bold"
+                  : "text-muted-foreground"
+              }`}
             >
               Shop
             </NavLink>
@@ -191,7 +195,12 @@ const ResponsiveMenu = ({ isLoggin }: { isLoggin: boolean }) => {
           <SheetTrigger asChild>
             <NavLink
               to="/featured"
-              className="text-muted-foreground hover:text-foreground"
+              onClick={() => handleNavigation("/featured")}
+              className={`transition-colors hover:text-foreground ${
+                isActive("/featured")
+                  ? "text-black font-bold"
+                  : "text-muted-foreground"
+              }`}
             >
               Featured
             </NavLink>
@@ -199,7 +208,12 @@ const ResponsiveMenu = ({ isLoggin }: { isLoggin: boolean }) => {
           <SheetTrigger asChild>
             <NavLink
               to="/recommended"
-              className="text-muted-foreground hover:text-foreground"
+              onClick={() => handleNavigation("/recommended")}
+              className={`transition-colors hover:text-foreground ${
+                isActive("/recommended")
+                  ? "text-black font-bold"
+                  : "text-muted-foreground"
+              }`}
             >
               Recommended
             </NavLink>

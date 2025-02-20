@@ -1,60 +1,36 @@
-import Product from "@/components/Product";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import products from "@/mocks/products.json";
-import Autoplay from "embla-carousel-autoplay";
-import { useRef } from "react";
-import { Link } from "react-router-dom";
+import ListOfProducts from "@/components/ListOfProducts";
+import { useProducts } from "@/context/products";
+
 import { motion } from "framer-motion";
 
 const Featured = () => {
-  const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }));
-  const featuredProducts = products.slice(0, 5);
+  const { products } = useProducts();
+  const featuredProducts = products
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 12);
 
   return (
-    <motion.div
+    <motion.section
       initial={{ opacity: 0, y: 50 }} // Estado inicial
       animate={{ opacity: 1, y: 0 }} // Estado final
       transition={{ duration: 0.5 }}
     >
       {/* Banner */}
-      <header className="bg-gray-100"></header>
+      <header className="bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-700 text-white py-8 sm:py-12 px-6 sm:px-12 shadow-lg text-center">
+        <h2 className="uppercase text-2xl sm:text-5xl font-bold tracking-wide">
+          Featured Products
+        </h2>
+        <p className="mt-3 sm:mt-5 text-sm sm:text-lg font-light max-w-2xl mx-auto">
+          Discover our latest and most popular products, carefully selected for
+          you. High quality, great design, and unbeatable prices.
+        </p>
+      </header>
 
       {/* Featured Products Section */}
-      <section className="px-6 sm:px-10 lg:px-16 mt-12">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl sm:text-3xl font-semibold text-gray-700">
-            Featured Products
-          </h2>
-          <Link
-            to="/products"
-            className="text-sm sm:text-lg underline text-gray-500 hover:text-gray-800"
-          >
-            See all
-          </Link>
-        </div>
-        <ul className="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
-          {featuredProducts.map((product) => (
-            <Product
-              key={product.id}
-              id={product.id}
-              image={product.image}
-              title={product.title}
-              category={product.category}
-              price={product.price}
-              size="md"
-              cart={true}
-              rating={product.rating.rate}
-            />
-          ))}
-        </ul>
-      </section>
-    </motion.div>
+      <main className="px-4 md:px-14 mt-12">
+        <ListOfProducts products={featuredProducts} />
+      </main>
+    </motion.section>
   );
 };
 

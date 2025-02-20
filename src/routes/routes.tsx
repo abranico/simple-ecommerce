@@ -6,6 +6,7 @@ import Cart from "@/pages/Cart/Cart.tsx";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import NotFound from "./NotFound";
 import Featured from "@/pages/Featured/Featured";
+import Recommended from "@/pages/Recommended/Recommended";
 
 const Shop = lazy(() => import("@/pages/Shop/Shop"));
 const Dashboard = lazy(() => import("@/pages/Dashboard/Dashboard"));
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "featured",
         element: <Featured />,
+      },
+      {
+        path: "recommended",
+        element: <Recommended />,
       },
       {
         path: "product/:id",

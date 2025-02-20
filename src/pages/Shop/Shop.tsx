@@ -1,12 +1,3 @@
-import products from "@/mocks/products.json";
-
-import { useState } from "react";
-import Product from "../../components/Product";
-import Filters from "./components/filters/Filters";
-import { motion } from "framer-motion";
-import useFilter from "./hooks/useFilter";
-import ListOfProducts from "@/components/ListOfProducts";
-import { Filter, ListFilter } from "lucide-react";
 import {
   Button,
   SearchInput,
@@ -14,7 +5,15 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components";
+import ListOfProducts from "@/components/ListOfProducts";
+import { useProducts } from "@/context/products";
+import { motion } from "framer-motion";
+import { ListFilter } from "lucide-react";
+import { useState } from "react";
+import Filters from "./components/filters/Filters";
+import useFilter from "./hooks/useFilter";
 const Shop = () => {
+  const { products } = useProducts();
   const { sortedProducts, handleFilters, filter } = useFilter(products);
   const [showFilters, setShowFilters] = useState(false);
   return (

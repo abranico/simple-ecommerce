@@ -1,15 +1,16 @@
-import Product from "@/components/Product";
+import ListOfProducts from "@/components/ListOfProducts";
 import { useCart } from "@/context/cart.context";
-import products from "@/mocks/products.json";
+import { useProducts } from "@/context/products";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, Star } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
-import { Progress } from "@/components/ui/progress";
 
 const ProductView = () => {
+  const { products } = useProducts();
   const { id } = useParams();
-
-  const product = products.find((product) => product.id == id);
+  const product = products.find(
+    (product) => product.id === parseInt(id as string)
+  );
 
   if (!product) return <div>No se encontro este producto</div>;
 
@@ -26,6 +27,12 @@ const ProductView = () => {
   const { cart, addToCart, removeFromCart } = useCart();
 
   const isCart = cart.find((cart) => cart.id == id);
+
+  const relatedProducts = products
+    .filter(
+      (product) => product.category === category && product.id !== productId
+    )
+    .sort((a, b) => b.rating.rate - a.rating.rate);
 
   return (
     <AnimatePresence>
@@ -52,7 +59,8 @@ const ProductView = () => {
           <div className="ml-16 max-w-xl flex flex-col justify-between ">
             <header>
               <Link
-                to={`/product/${category}`}
+                to="/shop"
+                state={category}
                 className="text-xs text-blue-500 hover:underline cursor-pointer uppercase tracking-wide"
               >
                 {category}
@@ -101,80 +109,12 @@ const ProductView = () => {
             </footer>
           </div>
         </article>
-        <div className="flex">
-          <section className="w-full mt-10">
-            <h3 className="font-semibold my-10 text-2xl text-gray-700">
-              Product reviews
-            </h3>
-            {/*  */}
-            <div className="w-72  rounded-lg shadow-md p-5">
-              <div className="flex items-center gap-4 py-5 ">
-                <p className="text-blue-500 text-6xl font-extrabold">4.5</p>
-                <div className="flex flex-col gap-1">
-                  <span className="flex">
-                    {new Array(5).fill(null).map(() => (
-                      <Star size={18} className="text-gray-800" />
-                    ))}
-                  </span>
-                  <span className="text-gray-600 text-sm">45 reviews</span>
-                </div>
-              </div>
-              <ul className="space-y-2">
-                {[5, 4, 3, 2, 1].map((rating) => (
-                  <li key={rating} className="flex items-center gap-4">
-                    <Progress
-                      value={
-                        rating === 5
-                          ? 45
-                          : rating === 4
-                          ? 25
-                          : rating === 3
-                          ? 15
-                          : rating === 2
-                          ? 10
-                          : 5
-                      }
-                      className="h-3 bg-gray-200 rounded-full"
-                      indicatorColor="bg-blue-500"
-                    />
-                    <span className="flex items-center gap-1 text-gray-600">
-                      {rating} <Star size={14} className="text-gray-800" />
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/*  */}
-          </section>
-          <section className="mt-10">
-            <h3 className="font-semibold my-10 text-2xl text-gray-700">
-              Related products
-            </h3>
-            <ul className="flex flex-col gap-8 ">
-              {products
-                .filter(
-                  (product) =>
-                    product.category === category && product.id !== productId
-                )
-                .sort((a, b) => b.rating.rate - a.rating.rate)
-                .slice(0, 5)
-                .map((product) => (
-                  <Product
-                    key={product.id}
-                    id={product.id}
-                    image={product.image}
-                    title={product.title}
-                    category={product.category}
-                    price={product.price}
-                    size="md"
-                    cart={false}
-                    rating={product.rating.rate}
-                  />
-                ))}
-            </ul>
-          </section>
-        </div>
+        <section className="mt-10">
+          <h3 className="font-semibold my-10 text-2xl text-gray-700">
+            Related products
+          </h3>
+          <ListOfProducts products={relatedProducts} />
+        </section>
       </motion.section>
     </AnimatePresence>
   );

@@ -1,5 +1,6 @@
 import { Product } from "@/models/product.model";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 export interface Filter {
   categories: string[];
@@ -23,6 +24,9 @@ export enum SortBy {
 }
 
 const useFilter = (products: Product[]) => {
+  const location = useLocation();
+  const category = location.state;
+  console.log("category:", category);
   const [filter, setFilters] = useState<Filter>({
     categories: [],
     price: {
@@ -33,6 +37,15 @@ const useFilter = (products: Product[]) => {
     rating: 0,
     sortby: SortBy.relevance,
   });
+
+  useEffect(() => {
+    if (category) {
+      setFilters((prev) => ({
+        ...prev,
+        categories: [category],
+      }));
+    }
+  }, [category]);
 
   const handleFilters = (newFilters: Partial<Filter>) => {
     setFilters((prev) => ({ ...prev, ...newFilters }));

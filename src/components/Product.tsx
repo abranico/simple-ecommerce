@@ -1,5 +1,5 @@
 import { useCart } from "@/context/cart.context";
-import { Product } from "@/models/product.model";
+import { IProduct } from "@/models/product.model";
 import { ShoppingCart, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -28,7 +28,7 @@ const Product: React.FC<ProductProps> = ({
   const isInCart = cart.some((cart) => cart.id === id);
 
   const handleAddToCart = () => {
-    const product: Partial<Product> = {
+    const product: Partial<IProduct> = {
       id,
       image,
       title,
@@ -57,7 +57,8 @@ const Product: React.FC<ProductProps> = ({
         />
         <div className="rounded-b-lg text-sm font-medium text-gray-800    px-2 py-1 flex flex-col gap-2">
           <Link
-            to="product/category"
+            to="/shop"
+            state={category}
             className="text-[13px] mx-auto w-fit text-blue-500 hover:underline cursor-pointer"
           >
             {category}
