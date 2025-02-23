@@ -1,6 +1,7 @@
 import ListOfProducts from "@/components/ListOfProducts";
 import { useCart } from "@/context/cart.context";
 import { useProducts } from "@/context/products";
+import NotFound from "@/routes/NotFound";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, Star } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
@@ -11,8 +12,9 @@ const ProductView = () => {
   const product = products.find(
     (product) => product.id === parseInt(id as string)
   );
+  const { cart, add, remove } = useCart();
 
-  if (!product) return <div>No se encontro este producto</div>;
+  if (!product) return <NotFound />;
 
   const {
     id: productId,
@@ -24,9 +26,7 @@ const ProductView = () => {
     price,
   } = product;
 
-  const { cart, addToCart, removeFromCart } = useCart();
-
-  const isCart = cart.find((cart) => cart.id == id);
+  const isCart = cart.find((item) => item.id === productId);
 
   const relatedProducts = products
     .filter(
@@ -41,7 +41,7 @@ const ProductView = () => {
         initial={{ opacity: 0, y: 50 }} // Estado inicial
         animate={{ opacity: 1, y: 0 }} // Estado final
         transition={{ duration: 0.5 }}
-        className="px-14 py-10 "
+        className="px-4 md:px-14 py-10  "
       >
         <Link
           to="/shop"
@@ -50,13 +50,13 @@ const ProductView = () => {
           <ArrowLeft className="w-5 h-5" />
           <span className="text-sm cursor-pointer">Back to shop</span>
         </Link>
-        <article className="flex  h-full  bg-white p-8 shadow-lg rounded-lg">
+        <article className="flex flex-col md:flex-row md:justify-center    h-full  bg-red-white  p-8 shadow-lg rounded-lg">
           <img
             src={image}
             alt={title}
-            className="w-80 h-80 object-contain  self-start"
+            className="w-full md:w-80 h-80 object-contain [mask-image:linear-gradient(black_90%,transparent)]   "
           />
-          <div className="ml-16 max-w-xl flex flex-col justify-between ">
+          <div className=" w-full md:max-w-xl mt-5 md:ml-16 flex flex-col justify-between ">
             <header>
               <Link
                 to="/shop"
@@ -90,7 +90,7 @@ const ProductView = () => {
               {isCart ? (
                 <button
                   onClick={() => {
-                    removeFromCart(product);
+                    remove(product.id);
                   }}
                   className="bg-gray-100 text-black border text-sm h-12 px-6 rounded font-semibold hover:bg-gray-200 transition duration-300 "
                 >
@@ -99,7 +99,7 @@ const ProductView = () => {
               ) : (
                 <button
                   onClick={() => {
-                    addToCart(product);
+                    add(product);
                   }}
                   className="bg-gray-800 text-white text-sm h-12 px-6 rounded font-semibold hover:bg-gray-800/80 transition duration-300 "
                 >

@@ -1,12 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  CircleUser,
-  Menu,
-  Package2,
-  ShoppingBag,
-  ShoppingCartIcon,
-  User,
-} from "lucide-react";
+import { CircleUser, Menu, ShoppingCartIcon, User } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import {
@@ -17,22 +10,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { IS_DEMO } from "@/config";
 import { useAuth } from "@/context/auth.context";
-import { useRef, useState } from "react";
-import LoginModal from "./LoginModal";
 import { useCart } from "@/context/cart.context";
-import CartModal from "./CartModal";
-import SearchInput from "./SearchInput";
 import clsx from "clsx";
+import { useState } from "react";
+import CartModal from "./CartModal";
+import LoginModal from "./LoginModal";
+import SearchInput from "./SearchInput";
 const Navbar = () => {
-  const { isLoggin, isAdmin } = useAuth();
+  const { isLoggin } = useAuth();
 
   return (
     <div className=" flex w-full flex-col    ">

@@ -1,5 +1,4 @@
-import { useCart } from "@/context/cart.context";
-import { IProduct } from "@/models/product.model";
+import { CartItem, useCart } from "@/context/cart.context";
 import { ShoppingCart, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -9,7 +8,6 @@ interface ProductProps {
   title: string;
   category: string;
   price: number;
-  cart: boolean;
   size: "md" | "lg";
   rating: number;
 }
@@ -20,28 +18,9 @@ const Product: React.FC<ProductProps> = ({
   title,
   category,
   price,
-  cart: $cart,
   size,
   rating,
 }) => {
-  const { cart, addToCart, removeFromCart } = useCart();
-  const isInCart = cart.some((cart) => cart.id === id);
-
-  const handleAddToCart = () => {
-    const product: Partial<IProduct> = {
-      id,
-      image,
-      title,
-      category,
-      price,
-    };
-    addToCart(product);
-  };
-
-  const handleRemoveFromCart = () => {
-    removeFromCart({ id });
-  };
-
   return (
     <li
       className="w-full h-full hover:scale-105 group transition-all 
@@ -50,7 +29,7 @@ const Product: React.FC<ProductProps> = ({
       <Link to={`/product/${id}`}>
         <img
           src={image}
-          className={`w-full ${
+          className={`w-full [mask-image:linear-gradient(black_90%,transparent)] ${
             size === "lg" ? "h-52" : "h-40"
           }  object-contain p-5  duration-300 group-hover:p-1   bg-white `}
           alt={title}
@@ -79,24 +58,6 @@ const Product: React.FC<ProductProps> = ({
             <p className=" text-lg font-bold text-gray-900 tracking-wider">
               ${price}
             </p>
-            {$cart &&
-              (isInCart ? (
-                <button
-                  onClick={handleRemoveFromCart}
-                  className="relative border px-5 py-1 rounded bg-green-400 hover:bg-green-500 transition-all active:scale-105 "
-                  title="Remove from cart"
-                >
-                  <ShoppingCart />
-                </button>
-              ) : (
-                <button
-                  onClick={handleAddToCart}
-                  className="border px-5 py-1 rounded hover:bg-green-400 active:scale-105 transition-all"
-                  title="Add to cart"
-                >
-                  <ShoppingCart />
-                </button>
-              ))}
           </div>
         </div>
       </Link>

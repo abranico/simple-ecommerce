@@ -24,7 +24,6 @@ const ListOfProducts: React.FC<ListOfProductsProps> = ({ products }) => {
               category={product.category}
               price={product.price}
               size="lg"
-              cart={false}
               rating={product.rating.rate}
             />
           ))}
