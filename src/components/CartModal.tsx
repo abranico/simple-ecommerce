@@ -23,12 +23,12 @@ const CartModal: React.FC<CartModalProps> = ({ sheetOpen, closeSheet }) => {
     <Sheet open={sheetOpen} onOpenChange={closeSheet}>
       <SheetContent side="right" className="flex flex-col min-w-[50%] w-full">
         <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
+          <SheetTitle className="flex items-center gap-2 ">
             <ShoppingCart /> Shopping Cart
           </SheetTitle>
         </SheetHeader>
 
-        <div className="flex-1 overflow-y-auto px-4 py-6">
+        <div className="flex-1 overflow-y-auto md:px-4 py-6">
           {cart.length === 0 ? (
             <div className="text-center text-gray-500 py-8">
               Your cart is empty
@@ -82,7 +82,7 @@ const CartModal: React.FC<CartModalProps> = ({ sheetOpen, closeSheet }) => {
         </div>
 
         <SheetFooter>
-          <div className="border-t px-4 py-4 space-y-4 w-full">
+          <div className="border-t md:px-4 py-4 space-y-4 w-full">
             <div className="flex items-center justify-between text-lg font-semibold">
               <span>Total</span>
               <span>${total}</span>
