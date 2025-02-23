@@ -7,6 +7,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "./ui/sheet";
+import { Link } from "react-router-dom";
 
 interface CartModalProps {
   sheetOpen: boolean;
@@ -15,13 +16,12 @@ interface CartModalProps {
 
 const CartModal: React.FC<CartModalProps> = ({ sheetOpen, closeSheet }) => {
   const { cart, remove, increment, decrement, clear } = useCart();
-  const total = cart.reduce(
-    (sum, product) => sum + product.price * product.quantity,
-    0
-  );
+  const total = cart
+    .reduce((sum, product) => sum + product.price * product.quantity, 0)
+    .toFixed(2);
   return (
     <Sheet open={sheetOpen} onOpenChange={closeSheet}>
-      <SheetContent side="right" className="min-w-[50%] w-full">
+      <SheetContent side="right" className="flex flex-col min-w-[50%] w-full">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
             <ShoppingCart /> Shopping Cart
@@ -40,10 +40,15 @@ const CartModal: React.FC<CartModalProps> = ({ sheetOpen, closeSheet }) => {
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-20 h-20 object-cover rounded  [mask-image:linear-gradient(black_90%,transparent)]"
+                    className="max-w-10 w-full  object-cover rounded  "
                   />
                   <div className="flex-1">
-                    <h3 className="font-medium">{item.title}</h3>
+                    <Link
+                      to={`product/${item.id}`}
+                      className="text-gray-800 hover:text-cyan-800 font-medium"
+                    >
+                      {item.title}
+                    </Link>
                     <p className="text-gray-600">${item.price.toFixed(2)}</p>
                     <div className="flex items-center gap-2 mt-2">
                       <button
@@ -76,8 +81,8 @@ const CartModal: React.FC<CartModalProps> = ({ sheetOpen, closeSheet }) => {
           )}
         </div>
 
-        <SheetFooter className="absolute bottom-0 left-0 right-0  ">
-          <div className="border-t px-4 py-6 space-y-4 w-full">
+        <SheetFooter>
+          <div className="border-t px-4 py-4 space-y-4 w-full">
             <div className="flex items-center justify-between text-lg font-semibold">
               <span>Total</span>
               <span>${total}</span>
